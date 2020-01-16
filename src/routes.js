@@ -1,17 +1,22 @@
 const { Router } = require('express');
 const StudentController = require('./controllers/StudentController');
+const AuthenticateController = require('./controllers/AuthenticateController');
+const CourseController = require('./controllers/CourseController');
+const SubjectController = require('./controllers/SubjectController');
 
 const routes = Router();
 
+// Authenticate
+routes.post('/auth', AuthenticateController.index);
+
 // Student
 routes.get('/students', StudentController.index);
-routes.get('/student/:id', StudentController.show);
+routes.get('/students/:id', StudentController.show);
 routes.post('/students', StudentController.store);
-routes.put('/students', StudentController.update);
-routes.delete('/student/:id', StudentController.destroy);
+routes.put('/students/:id', StudentController.update);
+routes.delete('/students/:id', StudentController.destroy);
 
 // Course
-
 
 // Subject 
 
