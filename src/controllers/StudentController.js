@@ -1,4 +1,5 @@
 const Student = require('../models/Student');
+const createUser = require('./utils/CreateUser');
 
 module.exports = {
 
@@ -17,13 +18,15 @@ module.exports = {
     },
 
     async store(request, response) {
-        // const { name, } = request.body;
+        const { name, email, password } = request.body;
 
         const student = await Student.create({
-            // name,
+            name,
         });
 
-        return response.json(student);
+        const user = await createUser(student.id, email, password);
+
+        return response.json(user);
     },
 
     async update(request, response) {

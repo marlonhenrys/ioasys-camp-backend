@@ -1,14 +1,16 @@
 const User = require('../models/User');
+const crypto = require('crypto-js');
 
 module.exports = {
 
     async index(request, response) {
-        const { email, senha } = request.body;
+        let { email, password } = request.body;
 
-        const user = await User.findOne({
+        const user = await User.findOne({ email });
 
-        });
-
-        return response.json(user);
+        if (user && user.password == crypto.SHA256(password))
+            return response.json(user);
+        else
+            return response.send();
     }
 }
