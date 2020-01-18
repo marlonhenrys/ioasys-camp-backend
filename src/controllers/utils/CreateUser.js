@@ -1,10 +1,10 @@
 const User = require('../../models/User');
 const crypto = require('crypto-js');
 
-module.exports = async (student_id, email, password) => {
+module.exports = async (student, email, password) => {
     
     const user = await User.create({
-        student_id,
+        student,
         email,
         password: crypto.SHA256(password),
     })

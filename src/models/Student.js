@@ -5,7 +5,18 @@ const StudentSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-    }
+    },
+    course: {
+        type: mongoose.ObjectId,
+    },
+    gender: {
+        type: String,
+        required: true,
+    },
+    birthdate: {
+        type: Date,
+        required: true,
+    },
 });
 
 StudentSchema.plugin(mongoosePaginate);
