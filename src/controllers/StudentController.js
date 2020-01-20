@@ -35,9 +35,9 @@ module.exports = {
         const student = await Student.findByIdAndUpdate(request.params.id, request.body, { new: true });
 
         if (request.body.password)
-            const user = await updateUser(request.body.password);
+            await updateUser(request.body.password);
 
-        return response.json({ student, user });
+        return response.json(student);
     },
 
     async destroy(request, response) {
