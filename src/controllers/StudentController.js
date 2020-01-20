@@ -1,5 +1,7 @@
 const Student = require('../models/Student');
 const createUser = require('./utils/CreateUser');
+const updateUser = require('./utils/UpdateUser');
+const destroyUser = require('./utils/DestroyUser');
 
 module.exports = {
 
@@ -32,12 +34,15 @@ module.exports = {
     async update(request, response) {
         const student = await Student.findByIdAndUpdate(request.params.id, request.body, { new: true });
 
-        return response.json(student);
+        if (request.body.password)
+            const user = await updateUser(request.body.password);
+
+        return response.json({ student, user });
     },
 
     async destroy(request, response) {
         await Student.findByIdAndDelete(request.params.id);
-
-        return response.send();
+        await destroyUser(request.params.id);
+        return response.send('User successfully deleted');
     }
 };

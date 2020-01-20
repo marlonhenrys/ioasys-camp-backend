@@ -7,7 +7,7 @@ module.exports = async (student, email, password) => {
         student,
         email,
         password: crypto.SHA256(password),
-    })
+    });
 
     return user;
 }

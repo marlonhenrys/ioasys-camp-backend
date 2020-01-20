@@ -11,6 +11,6 @@ module.exports = {
         if (user && user.password == crypto.SHA256(password))
             return response.json(user);
         else
-            return response.send();
+            return response.status(401);
     }
 }
