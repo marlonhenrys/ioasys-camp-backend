@@ -17,6 +17,10 @@ const StudentSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    active: {
+        type: Boolean,
+        default: true,
+    }
 });
 
 StudentSchema.plugin(mongoosePaginate);
