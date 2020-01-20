@@ -6,6 +6,13 @@ const SubjectController = require('./controllers/SubjectController');
 
 const routes = Router();
 
+const index = async (request, response) => {
+    return response.send('[ioasys CAMP 2020] API Education App is running...')
+}
+
+// Index
+routes.get('/', index);
+
 // Authenticate
 routes.post('/auth', AuthenticateController.index);
 
