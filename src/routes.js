@@ -1,25 +1,34 @@
 const { Router } = require('express');
+const authMiddleware = require('./middlewares/auth');
 const StudentController = require('./controllers/StudentController');
-const AuthenticateController = require('./controllers/AuthenticateController');
+const AuthController = require('./controllers/AuthController');
 const CourseController = require('./controllers/CourseController');
 const SubjectController = require('./controllers/SubjectController');
 
 const routes = Router();
 
-const index = async (request, response) => {
-    return response.send('[ioasys CAMP 2020] API Education App is running...')
-}
+const indexApp = async (request, response) => {
+    return response.send('ioasys CAMP 2020 | API education app is running...')
+};
+
+// PUBLIC ROUTES
 
 // Index
-routes.get('/', index);
+routes.get('/', indexApp);
 
-// Authenticate
-routes.post('/auth', AuthenticateController.index);
+// Student Register
+routes.post('/students', StudentController.store);
 
-// Student
+// User Authenticate
+routes.post('/authenticate', AuthController.index);
+
+
+// PRIVATE ROUTES 
+// routes.use(authMiddleware);
+
+// Student 
 routes.get('/students', StudentController.index);
 routes.get('/students/:id', StudentController.show);
-routes.post('/students', StudentController.store);
 routes.put('/students/:id', StudentController.update);
 routes.delete('/students/:id', StudentController.destroy);
 

@@ -1,5 +1,6 @@
 const Student = require('../models/Student');
-const UserController = require('./utils/UserController');
+const User = require('../models/User');
+const generateToken = require('../utils/generateToken');
 
 module.exports = {
 
@@ -27,13 +28,16 @@ module.exports = {
         const { email, password, ...data } = request.body;
 
         try {
-            if (UserController.exists(email))
+
+            const oldUser = await User.findOne(email);
+
+            if (oldUser)
                 return response.status(400).send({ error: 'User already exists' });
 
             const student = await Student.create(data);
-            const user = await UserController.create(student.id, email, password);
+            const user = await User.create({ student: student.id, email, password });
 
-            return response.json(user);
+            return response.json({ user, token: generateToken(user.id) });
 
         } catch (error) {
             response.status(400).send({ error: 'Registration failed' });
@@ -49,7 +53,7 @@ module.exports = {
             const student = await Student.findByIdAndUpdate(studentId, data, { new: true });
 
             if (password)
-                await UserController.update(studentId, password);
+                await User.findOneAndUpdate({ student: studentId }, password);
 
             return response.json(student);
 
@@ -64,7 +68,7 @@ module.exports = {
 
         try {
             await Student.findByIdAndUpdate(studentId, { active: false });
-            await UserController.destroy(studentId);
+            await User.findOneAndDelete({ student: studentId });
 
             return response.status(200).send();
 
