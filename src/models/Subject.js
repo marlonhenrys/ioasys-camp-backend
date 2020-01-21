@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 
 const SubjectSchema = new mongoose.Schema({
     course: {
@@ -14,5 +15,6 @@ const SubjectSchema = new mongoose.Schema({
         required: true,
     },
 });
+SubjectSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Subject', SubjectSchema);

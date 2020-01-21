@@ -22,7 +22,6 @@ routes.post('/students', StudentController.store);
 // User Authenticate
 routes.post('/authenticate', AuthController.index);
 
-
 // PRIVATE ROUTES 
 // routes.use(authMiddleware);
 
@@ -33,7 +32,9 @@ routes.put('/students/:id', StudentController.update);
 routes.delete('/students/:id', StudentController.destroy);
 
 // Course
+routes.get('/courses', CourseController.index);
 
 // Subject 
+routes.get('/subjects', SubjectController.index);
 
 module.exports = routes;
