@@ -1,13 +1,12 @@
 const Student = require('../models/Student');
 const User = require('../models/User');
-const generateToken = require('../utils/generateToken');
 
 module.exports = {
 
     async index(request, response) {
 
         const { page = 1 } = request.query;
-        const students = await Student.paginate({}, { page, limit: 10 });
+        const students = await Student.paginate({ active: true }, { page, limit: 10 });
 
         return response.json(students);
     },
@@ -23,31 +22,10 @@ module.exports = {
         }
     },
 
-    async store(request, response) {
-
-        const { email, password, ...data } = request.body;
-
-        try {
-
-            const oldUser = await User.findOne(email);
-
-            if (oldUser)
-                return response.status(400).send({ error: 'User already exists' });
-
-            const student = await Student.create(data);
-            const user = await User.create({ student: student.id, email, password });
-
-            return response.json({ user, token: generateToken(user.id) });
-
-        } catch (error) {
-            response.status(400).send({ error: 'Registration failed' });
-        }
-    },
-
     async update(request, response) {
 
         const { password, ...data } = request.body;
-        const studentId = request.params.id;
+        const { studentId } = request;
 
         try {
             const student = await Student.findByIdAndUpdate(studentId, data, { new: true });
@@ -64,7 +42,7 @@ module.exports = {
 
     async destroy(request, response) {
 
-        const studentId = request.params.id;
+        const { studentId } = request;
 
         try {
             await Student.findByIdAndUpdate(studentId, { active: false });

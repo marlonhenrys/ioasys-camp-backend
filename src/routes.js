@@ -1,39 +1,38 @@
 const { Router } = require('express');
-const authMiddleware = require('./middlewares/auth');
-const StudentController = require('./controllers/StudentController');
-const AuthController = require('./controllers/AuthController');
-const CourseController = require('./controllers/CourseController');
-const SubjectController = require('./controllers/SubjectController');
+const summary = require('./app/controllers/utils/Summary');
+const authMiddleware = require('./app/middlewares/auth');
+const studentController = require('./app/controllers/StudentController');
+const authController = require('./app/controllers/AuthController');
+const courseController = require('./app/controllers/CourseController');
+const subjectController = require('./app/controllers/SubjectController');
 
 const routes = Router();
 
-const indexApp = async (request, response) => {
-    return response.send('ioasys CAMP 2020 | API education app is running...')
-};
+// --------------- PUBLIC ROUTES ---------------
 
-// PUBLIC ROUTES
+// Summary (Index)
+routes.get('/', summary);
 
-// Index
-routes.get('/', indexApp);
+// Register (Student and User)
+routes.post('/register', authController.register);
 
-// Student Register
-routes.post('/students', StudentController.store);
-
-// User Authenticate
-routes.post('/authenticate', AuthController.index);
+// Authenticate (User)
+routes.post('/login', authController.login);
 
 
-// PRIVATE ROUTES 
+// --------------- PRIVATE ROUTES ---------------
+
+// Route Protection (JWT)
 // routes.use(authMiddleware);
 
-// Student 
-routes.get('/students', StudentController.index);
-routes.get('/students/:id', StudentController.show);
-routes.put('/students/:id', StudentController.update);
-routes.delete('/students/:id', StudentController.destroy);
+// Student CRUD
+routes.get('/students', studentController.index);
+routes.get('/students/:id', studentController.show);
+routes.put('/students', studentController.update);
+routes.delete('/students', studentController.destroy);
 
-// Course
+// Course CRUD
 
-// Subject 
+// Subject CRUD
 
 module.exports = routes;
