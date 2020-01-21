@@ -51,7 +51,7 @@ module.exports = {
             await Student.findByIdAndUpdate(studentId, { active: false });
             await User.findOneAndDelete({ student: studentId });
 
-            return response.status(200).send();
+            return response.send({ success: 'Successful deletion' });
 
         } catch (error) {
             response.status(400).send({ error: 'Deletion failed' });

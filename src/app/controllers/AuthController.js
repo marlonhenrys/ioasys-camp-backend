@@ -26,7 +26,7 @@ module.exports = {
             const student = await Student.create(data);
             const user = await User.create({ student: student.id, email, password });
 
-            return response.json({ user, token: generateToken(user.student) });
+            return response.status(201).json({ user, token: generateToken(user.student) });
 
         } catch (error) {
             console.log(error);
