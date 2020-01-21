@@ -1,7 +1,14 @@
 const User = require('../models/User');
 const Student = require('../models/Student');
 const crypto = require('crypto-js');
-const generateToken = require('../utils/generateToken');
+const jwt = require('jsonwebtoken');
+const authConfig = require('../../config/auth');
+
+function generateToken(studentId) {
+    return jwt.sign({ id: studentId }, authConfig.secret, {
+        expiresIn: 86400,
+    });
+}
 
 module.exports = {
 
