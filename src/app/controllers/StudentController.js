@@ -30,8 +30,11 @@ module.exports = {
         try {
             const student = await Student.findByIdAndUpdate(studentId, data, { new: true });
 
-            if (password)
-                await User.findOneAndUpdate({ student: studentId }, password);
+            if (password) {
+                const user = await User.findOne({ student: studentId });
+                user.password = password;
+                user.save();
+            }
 
             return response.json(student);
 

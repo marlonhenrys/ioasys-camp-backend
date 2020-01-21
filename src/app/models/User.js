@@ -29,11 +29,4 @@ UserSchema.pre('save', function (next) {
     next();
 });
 
-UserSchema.pre('update', function (next) {
-    const encrypted = crypto.SHA256(this.password);
-    this.password = encrypted;
-
-    next();
-})
-
 module.exports = mongoose.model('User', UserSchema);
