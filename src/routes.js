@@ -32,7 +32,9 @@ routes.put('/students', studentController.update);
 routes.delete('/students', studentController.destroy);
 
 // Course CRUD
+routes.get('/courses', courseController.index);
 
 // Subject CRUD
+routes.get('/subjects', subjectController.index);
 
 module.exports = routes;
