@@ -7,7 +7,9 @@ const StudentSchema = new mongoose.Schema({
         required: true,
     },
     course: {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course',
+        required: true,
     },
     gender: {
         type: String,
@@ -19,6 +21,7 @@ const StudentSchema = new mongoose.Schema({
     },
     active: {
         type: Boolean,
+        required: true,
         default: true,
     }
 });

@@ -38,7 +38,7 @@ module.exports = {
 
         let { email, password } = request.body;
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).populate('student');
 
         if (!user)
             return response.status(404).send({ error: 'User not found' });

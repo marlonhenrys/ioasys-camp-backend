@@ -2,11 +2,13 @@ const mongoose = require('mongoose');
 
 const DirectSolicitationSchema = new mongoose.Schema({
     helper: {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Student',
         required: true,
     },
     requester: {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Student',
         required: true,
     },
     status: {

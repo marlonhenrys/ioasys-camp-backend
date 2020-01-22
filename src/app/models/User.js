@@ -3,7 +3,8 @@ const crypto = require('crypto-js');
 
 const UserSchema = new mongoose.Schema({
     student: {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Student',
         required: true,
     },
     email: {

@@ -3,7 +3,8 @@ const mongoosePaginate = require('mongoose-paginate');
 
 const SubjectSchema = new mongoose.Schema({
     course: {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course',
         required: true,
     },
     turn: {
@@ -15,6 +16,7 @@ const SubjectSchema = new mongoose.Schema({
         required: true,
     },
 });
+
 SubjectSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Subject', SubjectSchema);

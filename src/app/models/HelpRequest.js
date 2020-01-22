@@ -1,15 +1,18 @@
 const mongoose = require('mongoose')
 
-const SolicitationSchema = new mongoose.Schema({
+const HelpRequestSchema = new mongoose.Schema({
     requester: {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Student',
         required: true,
     },
     helper: {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Student',
     },
     subject: {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subject',
         required: true,
     },
     title: {
@@ -30,4 +33,4 @@ const SolicitationSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('Solicitation', SolicitationSchema);
+module.exports = mongoose.model('HelpRequest', HelpRequestSchema);

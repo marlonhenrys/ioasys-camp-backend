@@ -9,6 +9,7 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0-un0i4.mongodb.net/appeducac
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
+    useCreateIndex: true,
 });
 
 app.use(express.json());

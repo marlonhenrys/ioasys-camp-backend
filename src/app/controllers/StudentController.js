@@ -14,7 +14,7 @@ module.exports = {
     async show(request, response) {
 
         try {
-            const student = await Student.findById(request.params.id);
+            const student = await Student.findById(request.params.id).populate('course');
             return response.json(student);
 
         } catch (error) {
