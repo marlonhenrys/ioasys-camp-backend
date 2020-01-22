@@ -5,8 +5,8 @@ module.exports = {
 
     async index(request, response) {
 
-        const { page = 1 } = request.query;
-        const students = await Student.paginate({ active: true }, { page, limit: 10 });
+        const { page = 1, limit = 10 } = request.query;
+        const students = await Student.paginate({ active: true }, { page, limit });
 
         return response.json(students);
     },
@@ -18,7 +18,7 @@ module.exports = {
             return response.json(student);
 
         } catch (error) {
-            response.status(404).send({ error: 'Student not found' });
+            return response.status(404).json({ message: 'Student not found', error });
         }
     },
 
@@ -33,13 +33,13 @@ module.exports = {
             if (password) {
                 const user = await User.findOne({ student: studentId });
                 user.password = password;
-                user.save();
+                await user.save();
             }
 
             return response.json(student);
 
         } catch (error) {
-            response.status(400).send({ error: 'Update failed' });
+            return response.status(400).json({ message: 'Update failed', error });
         }
     },
 
@@ -51,10 +51,10 @@ module.exports = {
             await Student.findByIdAndUpdate(studentId, { active: false });
             await User.findOneAndDelete({ student: studentId });
 
-            return response.send({ success: 'Successful deletion' });
+            return response.json({ message: 'Successful deletion' });
 
         } catch (error) {
-            response.status(400).send({ error: 'Deletion failed' });
+            return response.status(400).json({ message: 'Deletion failed', error });
         }
     }
 };

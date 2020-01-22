@@ -21,7 +21,7 @@ module.exports = {
             const oldUser = await User.findOne({ email });
 
             if (oldUser)
-                return response.status(400).send({ error: 'User already exists' });
+                return response.status(400).json({ error: 'User already exists' });
 
             const student = await Student.create(data);
             const user = await User.create({ student: student.id, email, password });
@@ -29,8 +29,7 @@ module.exports = {
             return response.status(201).json({ user, token: generateToken(user.student) });
 
         } catch (error) {
-            console.log(error);
-            response.status(400).send({ error: 'Registration failed' });
+            return response.status(400).json({ message: 'Registration failed', error });
         }
     },
 
@@ -41,10 +40,10 @@ module.exports = {
         const user = await User.findOne({ email }).populate('student');
 
         if (!user)
-            return response.status(404).send({ error: 'User not found' });
+            return response.status(404).json({ error: 'User not found' });
 
         if (user.password != crypto.SHA256(password))
-            return response.status(400).send({ error: 'Invalid password' });
+            return response.status(400).json({ error: 'Invalid password' });
 
         user.password = undefined;
 
