@@ -17,19 +17,31 @@ module.exports = {
         const { email, password, ...data } = request.body;
 
         try {
-
             const oldUser = await User.findOne({ email });
 
             if (oldUser)
-                return response.status(400).json({ error: 'User already exists' });
+                return response.status(400).json({
+                    message: 'User already exists',
+                    error: 'Registration failed'
+                });
 
             const student = await Student.create(data);
-            const user = await User.create({ student: student.id, email, password });
+            const user = await User.create({
+                student: student.id,
+                email,
+                password
+            });
 
-            return response.status(201).json({ user, token: generateToken(user.student) });
+            return response.status(201).json({
+                user,
+                token: generateToken(user.student)
+            });
 
         } catch (error) {
-            return response.status(400).json({ message: 'Registration failed', error });
+            return response.status(400).json({
+                message: 'Registration failed',
+                error
+            });
         }
     },
 
@@ -40,13 +52,22 @@ module.exports = {
         const user = await User.findOne({ email }).populate('student');
 
         if (!user)
-            return response.status(404).json({ error: 'User not found' });
+            return response.status(404).json({
+                message: 'User not found',
+                error: 'The user could not be authenticated'
+            });
 
         if (user.password != crypto.SHA256(password))
-            return response.status(400).json({ error: 'Invalid password' });
+            return response.status(400).json({
+                message: 'Invalid password',
+                error: 'The user could not be authenticated'
+            });
 
         user.password = undefined;
 
-        return response.json({ user, token: generateToken(user.student) });
+        return response.status(200).json({
+            user,
+            token: generateToken(user.student)
+        });
     }
 }

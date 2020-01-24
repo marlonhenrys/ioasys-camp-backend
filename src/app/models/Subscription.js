@@ -6,18 +6,18 @@ const SubscriptionSchema = new mongoose.Schema({
         ref: 'Student',
         required: false,
     },
-    solicitation: {
+    help_request: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Solicitation',
+        ref: 'HelpRequest',
         required: true,
     },
-    date: {
-        type: Date,
-        default: Date.now,
-    },
-    state: {
+    status: {
         type: String,
         required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
     }
 });
 

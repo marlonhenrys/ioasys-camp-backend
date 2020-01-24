@@ -8,17 +8,22 @@ module.exports = {
         const { page = 1, limit = 10 } = request.query;
         const students = await Student.paginate({ active: true }, { page, limit });
 
-        return response.json(students);
+        return response.status(200).json(students);
     },
 
     async show(request, response) {
 
+        const { id } = request.params;
+
         try {
-            const student = await Student.findById(request.params.id).populate('course');
-            return response.json(student);
+            const student = await Student.findById(id).populate('course');
+            return response.status(200).json(student);
 
         } catch (error) {
-            return response.status(404).json({ message: 'Student not found', error });
+            return response.status(404).json({
+                message: 'Student not found',
+                error
+            });
         }
     },
 
@@ -36,10 +41,13 @@ module.exports = {
                 await user.save();
             }
 
-            return response.json(student);
+            return response.status(200).json(student);
 
         } catch (error) {
-            return response.status(400).json({ message: 'Update failed', error });
+            return response.status(400).json({
+                message: 'Update failed',
+                error
+            });
         }
     },
 
@@ -51,10 +59,15 @@ module.exports = {
             await Student.findByIdAndUpdate(studentId, { active: false });
             await User.findOneAndDelete({ student: studentId });
 
-            return response.json({ message: 'Successful deletion' });
+            return response.status(200).json({
+                message: 'Successful deletion'
+            });
 
         } catch (error) {
-            return response.status(400).json({ message: 'Deletion failed', error });
+            return response.status(400).json({
+                message: 'Deletion failed',
+                error
+            });
         }
     }
 };

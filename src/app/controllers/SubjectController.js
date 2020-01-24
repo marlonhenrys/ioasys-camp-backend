@@ -7,6 +7,6 @@ module.exports = {
         const { page = 1, limit = 10 } = request.query;
         const subjects = await Subject.paginate({}, { page, limit });
 
-        return response.json(subjects);
+        return response.status(200).json(subjects);
     },
 }

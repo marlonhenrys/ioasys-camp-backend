@@ -7,6 +7,6 @@ module.exports = {
         const { page = 1, limit = 10 } = request.query;
         const courses = await Course.paginate({}, { page, limit });
 
-        return response.json(courses);
+        return response.status(200).json(courses);
     },
 }

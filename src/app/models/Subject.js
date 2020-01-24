@@ -7,14 +7,10 @@ const SubjectSchema = new mongoose.Schema({
         ref: 'Course',
         required: true,
     },
-    turn: {
-        type: String,
-        required: true,
-    },
     name: {
         type: String,
         required: true,
-    },
+    }
 });
 
 SubjectSchema.plugin(mongoosePaginate);
