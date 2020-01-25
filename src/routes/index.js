@@ -9,8 +9,9 @@ routes.use(require('./public.routes'));
 routes.use(require('../app/middlewares/auth'));
 
 // Private Routes
-routes.use(require('./student.routes'));
 routes.use(require('./course.routes'));
 routes.use(require('./subject.routes'));
+routes.use(require('./student.routes'));
+routes.use(require('./helper-list.routes'));
 
 module.exports = routes;

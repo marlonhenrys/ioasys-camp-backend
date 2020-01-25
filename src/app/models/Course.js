@@ -7,7 +7,8 @@ const CourseSchema = new mongoose.Schema({
         required: true,
     },
     institution: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Institution',
         required: true,
     },
     campus: {

@@ -52,13 +52,13 @@ module.exports = {
         const user = await User.findOne({ email }).populate('student');
 
         if (!user)
-            return response.status(404).json({
+            return response.status(401).json({
                 message: 'User not found',
                 error: 'The user could not be authenticated'
             });
 
         if (user.password != crypto.SHA256(password))
-            return response.status(400).json({
+            return response.status(401).json({
                 message: 'Invalid password',
                 error: 'The user could not be authenticated'
             });
