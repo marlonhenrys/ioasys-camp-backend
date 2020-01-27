@@ -5,7 +5,7 @@ const summary = require('../app/controllers/utils/Summary');
 const publicRoutes = Router();
 
 // Summary (Index)
-publicRoutes.get('/', summary);
+//publicRoutes.get('/', summary);
 // Register (Student and User)
 publicRoutes.post('/register', authController.register);
 // Authenticate (User)
