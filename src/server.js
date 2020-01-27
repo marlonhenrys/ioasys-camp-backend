@@ -29,7 +29,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  * @swagger
  * /subjects:
  *  get:
- *    description: Use to request all students
+ *    description: Use to request all subjects
  *    responses:
  *      '200':
  *        description: A successful response
