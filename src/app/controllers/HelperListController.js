@@ -4,9 +4,9 @@ module.exports = {
 
     async index(request, response) {
 
-        const { studentId } = request;
+        const { student } = request;
 
-        const helperList = await HelperList.find({ helper: studentId });
+        const helperList = await HelperList.find({ helper: student });
 
         return response.status(200).json(helperList);
     },
@@ -23,10 +23,10 @@ module.exports = {
     async store(request, response) {
 
         const { subjects } = request.body;
-        const { studentId } = request;
+        const { student } = request;
 
         try {
-            const helperList = await HelperList.find({ helper: studentId });
+            const helperList = await HelperList.find({ helper: student });
 
             subjects.map(subject => {
                 if (!helperList.subjects.includes(subject))
@@ -48,10 +48,10 @@ module.exports = {
     async destroy(request, response) {
 
         const { id } = request.params;
-        const { studentId } = request;
+        const { student } = request;
 
         try {
-            const helperList = await HelperList.find({ helper: studentId });
+            const helperList = await HelperList.find({ helper: student });
 
             const newList = helperList.subjects.filter(subject => subject != id);
 

@@ -4,8 +4,8 @@ const crypto = require('crypto-js');
 const jwt = require('jsonwebtoken');
 const authConfig = require('../../config/auth');
 
-function generateToken(studentId) {
-    return jwt.sign({ id: studentId }, authConfig.secret, {
+function generateToken(student, institution) {
+    return jwt.sign({ student, institution }, authConfig.secret, {
         expiresIn: 86400,
     });
 }
@@ -34,7 +34,7 @@ module.exports = {
 
             return response.status(201).json({
                 user,
-                token: generateToken(user.student)
+                token: generateToken(user.student, student.institution)
             });
 
         } catch (error) {
@@ -67,7 +67,7 @@ module.exports = {
 
         return response.status(200).json({
             user,
-            token: generateToken(user.student)
+            token: generateToken(user.student._id, user.student.institution)
         });
     }
 }

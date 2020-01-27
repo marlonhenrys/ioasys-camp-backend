@@ -32,7 +32,8 @@ module.exports = (request, response, next) => {
             error
         });
 
-        request.studentId = decoded.id;
+        request.student = decoded.student;
+        request.institution = decoded.institution;
 
         return next();
     });

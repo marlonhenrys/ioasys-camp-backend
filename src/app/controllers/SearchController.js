@@ -1,13 +1,14 @@
 const Student = require('../models/Student');
+const HelperList = require('../models/HelperList');
 
 module.exports = {
 
     async findHelpers(request, response) {
 
-        const {} = request.query;
+        const { institution } = request;
 
         try {
-            const helpers = await Student.find({
+            const helpers = await HelperList.find({
 
             });
 
@@ -19,7 +20,6 @@ module.exports = {
     },
 
     async findRequests(request, response) {
-
         // Próxima Sprint - ListaEnsinar
     }
 }

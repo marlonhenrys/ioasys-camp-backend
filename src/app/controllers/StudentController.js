@@ -30,18 +30,18 @@ module.exports = {
     async update(request, response) {
 
         const { password, ...data } = request.body;
-        const { studentId } = request;
+        const { student } = request;
 
         try {
-            const student = await Student.findByIdAndUpdate(studentId, data, { new: true });
+            const newStudent = await Student.findByIdAndUpdate(student, data, { new: true });
 
             if (password) {
-                const user = await User.findOne({ student: studentId });
+                const user = await User.findOne({ student });
                 user.password = password;
                 await user.save();
             }
 
-            return response.status(200).json(student);
+            return response.status(200).json(newStudent);
 
         } catch (error) {
             return response.status(400).json({
@@ -53,11 +53,11 @@ module.exports = {
 
     async destroy(request, response) {
 
-        const { studentId } = request;
+        const { student } = request;
 
         try {
-            await Student.findByIdAndUpdate(studentId, { active: false });
-            await User.findOneAndDelete({ student: studentId });
+            await Student.findByIdAndUpdate(student, { active: false });
+            await User.findOneAndDelete({ student });
 
             return response.status(200).json({
                 message: 'Successful deletion'
