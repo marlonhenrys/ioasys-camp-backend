@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 const mongoosastic = require('mongoosastic');
 
+const Institution = require('./Institution');
+
 const elasticConnection = require('../../config/elasticConnection.json');
 
 const CourseSchema = new mongoose.Schema({
@@ -14,6 +16,8 @@ const CourseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Institution',
         required: true,
+        es_schema: Institution,
+        es_indexed: true,
     },
     campus: {
         type: String,

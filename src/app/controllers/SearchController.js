@@ -5,11 +5,11 @@ module.exports = {
 
     async findHelpers(request, response) {
 
-        const { institution } = request;
+        const { institution = "PUC Minas", campus = "", course = "", subject = "" } = request;
 
         try {
             const helpers = await HelperList.find({
-
+                
             });
 
             return response.status(200).json(helpers);
