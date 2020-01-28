@@ -4,10 +4,6 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 
 const app = express();
-//Swagger
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 mongoose.connect(
     'mongodb+srv://admin:admin@cluster0-un0i4.mongodb.net/app_edu?retryWrites=true&w=majority', {
