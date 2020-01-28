@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
+const mongoosastic = require('mongoosastic');
 
 const StudentSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        es_indexed: true,
     },
     course: {
         type: mongoose.Schema.Types.ObjectId,
@@ -26,6 +28,9 @@ const StudentSchema = new mongoose.Schema({
     }
 });
 
+StudentSchema.plugin(mongoosastic, {
+    
+});
 StudentSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Student', StudentSchema);
