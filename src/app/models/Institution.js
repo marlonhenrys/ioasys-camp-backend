@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const mongoosastic = require('mongoosastic');
 
+const elasticConnection = require('../../config/elasticConnection.json');
+
 const InstitutionSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -9,8 +11,6 @@ const InstitutionSchema = new mongoose.Schema({
     }
 });
 
-InstitutionSchema.plugin(mongoosastic, {
-
-});
+InstitutionSchema.plugin(mongoosastic, elasticConnection);
 
 module.exports = mongoose.model('Institution', InstitutionSchema);

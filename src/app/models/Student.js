@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 const mongoosastic = require('mongoosastic');
 
+const elasticConnection = require('../../config/elasticConnection.json');
+
 const StudentSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -28,9 +30,7 @@ const StudentSchema = new mongoose.Schema({
     }
 });
 
-StudentSchema.plugin(mongoosastic, {
-    
-});
+StudentSchema.plugin(mongoosastic, elasticConnection);
 StudentSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Student', StudentSchema);

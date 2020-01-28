@@ -1,4 +1,7 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const mongoosastic = require('mongoosastic');
+
+const elasticConnection = require('../../config/elasticConnection.json');
 
 const HelpRequestSchema = new mongoose.Schema({
     requester: {
@@ -18,10 +21,12 @@ const HelpRequestSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
+        es_indexed: true,
     },
     body: {
         type: String,
         required: true,
+        es_indexed: true,
     },
     status: {
         type: String,
@@ -32,5 +37,7 @@ const HelpRequestSchema = new mongoose.Schema({
         default: Date.now,
     }
 });
+
+HelpRequestSchema.plugin(mongoosastic, elasticConnection);
 
 module.exports = mongoose.model('HelpRequest', HelpRequestSchema);
