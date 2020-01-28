@@ -1,11 +1,14 @@
 const { Router } = require('express');
 const authController = require('../app/controllers/AuthController');
-const summary = require('../app/controllers/utils/Summary');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.json');
 
 const publicRoutes = Router();
 
-// Summary (Index)
-publicRoutes.get('/', summary);
+//Swagger
+publicRoutes.use('/', swaggerUi.serve);
+publicRoutes.get('/', swaggerUi.setup(swaggerDocument));
+
 // Register (Student and User)
 publicRoutes.post('/register', authController.register);
 // Authenticate (User)
