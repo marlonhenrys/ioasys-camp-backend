@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "title": "ioasys CAMP 2020"
   },
-  "host": "http://api-edu.herokuapp.com/",
+  "host": "http://api-edu.herokuapp.com",
   "basePath": "/",
   "tags": [
     {
