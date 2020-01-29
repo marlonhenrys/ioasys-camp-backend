@@ -7,16 +7,14 @@ module.exports = {
 
         const { institution = "PUC Minas", campus = "", course = "", subject = "" } = request;
 
-        try {
-            const helpers = await HelperList.find({
-                
-            });
-
-            return response.status(200).json(helpers);
-
-        } catch (error) {
-
-        }
+        HelperList.search({
+            match_all: {}
+        }, {hydrate: true, hydrateWithESResults: true}, (err, results) => {
+            if(err){
+                return response.status(400).send(err);
+            }
+            return response.status(200).json(results.hits);
+        });
     },
 
     async findRequests(request, response) {
