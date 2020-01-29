@@ -24,4 +24,7 @@ const SubjectSchema = new mongoose.Schema({
 SubjectSchema.plugin(mongoosastic, elasticConnection);
 SubjectSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Subject', SubjectSchema);
+const Model = mongoose.model('Subject', SubjectSchema);
+Model.synchronize({}, {saveOnSynchronize: true});
+
+module.exports = Model;

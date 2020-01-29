@@ -25,4 +25,7 @@ const HelperListSchema = new mongoose.Schema({
 
 HelperListSchema.plugin(mongoosastic, elasticConnection);
 
-module.exports = mongoose.model('HelperList', HelperListSchema);
+const Model = mongoose.model('HelperList', HelperListSchema);
+Model.synchronize({}, {saveOnSynchronize: true});
+
+module.exports = Model;

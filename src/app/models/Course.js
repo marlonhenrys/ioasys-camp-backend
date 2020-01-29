@@ -29,4 +29,7 @@ const CourseSchema = new mongoose.Schema({
 CourseSchema.plugin(mongoosastic, elasticConnection);
 CourseSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Course', CourseSchema);
+const Model = mongoose.model('Course', CourseSchema);
+Model.synchronize({}, {saveOnSynchronize: true});
+
+module.exports = Model;

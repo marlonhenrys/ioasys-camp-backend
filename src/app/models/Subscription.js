@@ -33,4 +33,7 @@ const SubscriptionSchema = new mongoose.Schema({
 
 SubscriptionSchema.plugin(mongoosastic, elasticConnection);
 
-module.exports = mongoose.model('Subscription', SubscriptionSchema);
+const Model = mongoose.model('Subscription', SubscriptionSchema);
+Model.synchronize({}, {saveOnSynchronize: true});
+
+module.exports = Model;

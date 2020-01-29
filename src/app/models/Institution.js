@@ -13,4 +13,7 @@ const InstitutionSchema = new mongoose.Schema({
 
 InstitutionSchema.plugin(mongoosastic, elasticConnection);
 
-module.exports = mongoose.model('Institution', InstitutionSchema);
+const Model = mongoose.model('Institution', InstitutionSchema);
+Model.synchronize({}, {saveOnSynchronize: true});
+
+module.exports = Model;

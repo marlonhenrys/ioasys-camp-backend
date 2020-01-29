@@ -32,4 +32,7 @@ const DirectSolicitationSchema = new mongoose.Schema({
 
 DirectSolicitationSchema.plugin(mongoosastic, elasticConnection);
 
-module.exports = mongoose.model('DirectSolicitation', DirectSolicitationSchema);
+const Model = mongoose.model('DirectSolicitation', DirectSolicitationSchema);
+Model.synchronize({}, {saveOnSynchronize: true});
+
+module.exports = Model;

@@ -37,4 +37,7 @@ const StudentSchema = new mongoose.Schema({
 StudentSchema.plugin(mongoosastic, elasticConnection);
 StudentSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Student', StudentSchema);
+const Model = mongoose.model('Student', StudentSchema);
+Model.synchronize({}, {saveOnSynchronize: true});
+
+module.exports = Model;

@@ -49,4 +49,7 @@ const HelpRequestSchema = new mongoose.Schema({
 
 HelpRequestSchema.plugin(mongoosastic, elasticConnection);
 
-module.exports = mongoose.model('HelpRequest', HelpRequestSchema);
+const Model = mongoose.model('HelpRequest', HelpRequestSchema);
+Model.synchronize({}, {saveOnSynchronize: true});
+
+module.exports = Model;
