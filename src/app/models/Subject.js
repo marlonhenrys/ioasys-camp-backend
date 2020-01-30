@@ -11,8 +11,9 @@ const SubjectSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course',
         required: true,
-        es_schema: Course,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     name: {
         type: String,
@@ -21,10 +22,28 @@ const SubjectSchema = new mongoose.Schema({
     }
 });
 
+elasticConnection['populate'] = [
+    {path: 'course', select: 'name'}
+]
+
 SubjectSchema.plugin(mongoosastic, elasticConnection);
 SubjectSchema.plugin(mongoosePaginate);
 
+console.log("Elastic: ", elasticConnection);
+
 const Model = mongoose.model('Subject', SubjectSchema);
-Model.synchronize({}, {saveOnSynchronize: true});
+let stream = Model.synchronize({}, {saveOnSynchronize: true});
+
+let count = 0;
+
+stream.on('data', () => {
+    count++;
+});
+stream.on('close', () => {
+    console.log("Indexed subjects: " + count);
+});
+stream.on('error', (err) => {
+    console.log("ESIndex Subject Error: " + err);
+});
 
 module.exports = Model;
