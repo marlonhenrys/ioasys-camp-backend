@@ -1,7 +1,7 @@
 const HelperList = require('../models/HelperList');
 
 module.exports = {
-
+    //Index e show são a mesma coisa (??)
     async index(request, response) {
 
         const { student } = request;

@@ -19,6 +19,7 @@ const SubjectSchema = new mongoose.Schema({
         type: String,
         required: true,
         es_indexed: true,
+        es_type: 'search_as_you_type',
     }
 });
 
@@ -29,21 +30,7 @@ elasticConnection['populate'] = [
 SubjectSchema.plugin(mongoosastic, elasticConnection);
 SubjectSchema.plugin(mongoosePaginate);
 
-console.log("Elastic: ", elasticConnection);
-
 const Model = mongoose.model('Subject', SubjectSchema);
-let stream = Model.synchronize({}, {saveOnSynchronize: true});
-
-let count = 0;
-
-stream.on('data', () => {
-    count++;
-});
-stream.on('close', () => {
-    console.log("Indexed subjects: " + count);
-});
-stream.on('error', (err) => {
-    console.log("ESIndex Subject Error: " + err);
-});
+Model.synchronize({}, {saveOnSynchronize: true});
 
 module.exports = Model;

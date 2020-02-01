@@ -8,6 +8,7 @@ const InstitutionSchema = new mongoose.Schema({
         type: String,
         required: true,
         es_indexed: true,
+        es_type: 'search_as_you_type',
     }
 });
 

@@ -11,21 +11,24 @@ const HelpRequestSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
         required: true,
-        es_schema: Student,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     helper: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
-        es_schema: Student,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     subject: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subject',
         required: true,
-        es_schema: Subject,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     title: {
         type: String,
@@ -46,6 +49,12 @@ const HelpRequestSchema = new mongoose.Schema({
         default: Date.now,
     }
 });
+
+elasticConnection['populate'] = [
+    {path: 'requester'},
+    {path: 'helper'},
+    {path: 'subject'},
+]
 
 HelpRequestSchema.plugin(mongoosastic, elasticConnection);
 

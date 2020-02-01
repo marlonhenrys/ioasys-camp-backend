@@ -10,15 +10,17 @@ const DirectSolicitationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
         required: true,
-        es_schema: Student,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     requester: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
         required: true,
-        es_schema: Student,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     status: {
         type: String,
@@ -29,6 +31,11 @@ const DirectSolicitationSchema = new mongoose.Schema({
         default: Date.now,
     }
 });
+
+elasticConnection['populate'] = [
+    {path: 'helper'},
+    {path: 'requester'},
+]
 
 DirectSolicitationSchema.plugin(mongoosastic, elasticConnection);
 

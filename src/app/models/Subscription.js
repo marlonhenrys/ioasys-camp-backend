@@ -11,15 +11,17 @@ const SubscriptionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
         required: false,
-        es_schema: Student,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     help_request: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'HelpRequest',
         required: true,
-        es_schema: HelpRequest,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     status: {
         type: String,
@@ -30,6 +32,11 @@ const SubscriptionSchema = new mongoose.Schema({
         default: Date.now,
     }
 });
+
+elasticConnection['populate'] = [
+    {path: 'candidate'},
+    {path: 'help_request'},
+]
 
 SubscriptionSchema.plugin(mongoosastic, elasticConnection);
 

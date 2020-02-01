@@ -11,13 +11,15 @@ const StudentSchema = new mongoose.Schema({
         type: String,
         required: true,
         es_indexed: true,
+        es_type: 'search_as_you_type',
     },
     course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course',
         required: true,
-        es_schema: Course,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     gender: {
         type: String,
@@ -33,6 +35,10 @@ const StudentSchema = new mongoose.Schema({
         default: true,
     }
 });
+
+elasticConnection['populate'] = [
+    {path: 'course'},
+]
 
 StudentSchema.plugin(mongoosastic, elasticConnection);
 StudentSchema.plugin(mongoosePaginate);

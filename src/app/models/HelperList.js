@@ -11,17 +11,24 @@ const HelperListSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
         required: true,
-        es_schema: Student,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     },
     subjects: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subject',
         required: true,
-        es_schema: Subject,
         es_indexed: true,
+        es_type: 'nested',
+        es_include_in_parent: true,
     }]
 });
+
+elasticConnection['populate'] = [
+    {path: 'subjects', select: 'name'},
+    {path: 'helper'},
+]
 
 HelperListSchema.plugin(mongoosastic, elasticConnection);
 
