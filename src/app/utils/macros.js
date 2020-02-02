@@ -1,0 +1,2 @@
+const DEFAULT_MAX_HITS = 50;
+const MAX_HITS = 200;

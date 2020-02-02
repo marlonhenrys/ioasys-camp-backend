@@ -1,35 +1,35 @@
 const Regex = require('../utils/regexStringCleaner');
+const SizeFilter = require('../utils/sizeFilter');
+
 const Course = require('../models/Course');
 
 module.exports = {
 
     async index(request, response) {
-        const { institution = '', course = '', campus = '', size = 50 } = request.query;
+        const { institution = '', course = '', campus = '', size = 0 } = request.query;
         //Removing special characters and extra spaces from strings
         const courseFiltered = Regex(course);
         const institutionFiltered = Regex(institution);
         const campusFiltered = Regex(campus);
-
-        //Filtering for size (there is an internal max limit of 10000)
-        let sizeFiltered;
-        if(isNaN(Number(size))){
-            sizeFiltered = 50;
-        } else {
-            sizeFiltered = size;
-            if(sizeFiltered > 200){
-                sizeFiltered = 200;
-            }
-        }
 
         //Work around to return all values if param does not exist
         let courseNameQuery = {match_all: {}};
         let institutionQuery = {match_all: {}};
         if(courseFiltered && courseFiltered != ''){
             courseNameQuery = {
-                match_phrase_prefix: {'name': courseFiltered},
+                multi_match: {
+                    query: courseFiltered,
+                    type: 'bool_prefix',
+                    fuzziness: 'AUTO',
+                    fields: [
+                      'name',
+                      'name._2gram',
+                      'name._3gram'
+                    ],
+                },
             }
         }
-        if(institution && institution != ''){
+        if(institutionFiltered && institutionFiltered != ''){
             institutionQuery = {
                 term: {'institution._id': institutionFiltered},
             }
@@ -48,7 +48,7 @@ module.exports = {
                     }}, 
                 ],
             },
-        }, {size: sizeFiltered, hydrate: true, hydrateWithESResults: true}, (err, results) => {
+        }, {size: SizeFilter(size), hydrate: true, hydrateWithESResults: true}, (err, results) => {
             if(err){
                 return response.status(400).send(err);
             }

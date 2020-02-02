@@ -1,25 +1,51 @@
+const Regex = require('../utils/regexStringCleaner')
+const SizeFilter = require('../utils/sizeFilter');
+
 const Subject = require('../models/Subject')
 
 module.exports = {
 
     async index(request, response) {
 
-        //const { page = 1, limit = 10 } = request.query;
-        //const subjects = await Subject.paginate({}, { page, limit });
+        const { course = '', subject = '', size = 0 } = request.query;
+        //Removing special characters and extra spaces from strings
+        const courseFiltered = Regex(course);
+        const subjectFiltered = Regex(subject);
 
-        //return response.status(200).json(subjects);
+        //Work around to return all values if param does not exist
+        let courseQuery = {match_all: {}};
+        let subjectNameQuery = {match_all: {}};
+        if(subjectFiltered && subjectFiltered != ''){
+            subjectNameQuery = {
+                multi_match: {
+                    query: subjectFiltered,
+                    type: 'bool_prefix',
+                    fuzziness: 'AUTO',
+                    fields: [
+                      'name',
+                      'name._2gram',
+                      'name._3gram'
+                    ],
+                }
+            }
+        }
+        if(courseFiltered && courseFiltered != ''){
+            courseQuery = {
+                term: {'course._id': courseFiltered},
+            }
+        }
 
-        const { course, subject = "" } = request.query;
+        //Query itself
         Subject.search({
             bool: {
                 must: [
-                    {match: {'course._id': course}},
-                    {match: {'name': subject}},
-                ],
-            },
-        }, {hydrate: false, hydrateWithESResults: false}, (err, results) => {
+                    courseQuery,
+                    subjectNameQuery,
+                ]
+            }
+        }, {size: SizeFilter(size), hydrate: true, hydrateWithESResults: true}, (err, results) => {
             if(err){
-                return response.sendStatus(400);
+                return response.status(400).send(err);
             }
             return response.status(200).json(results.hits.hits);
         });
