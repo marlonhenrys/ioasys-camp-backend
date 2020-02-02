@@ -43,7 +43,7 @@ module.exports = {
                     subjectNameQuery,
                 ]
             }
-        }, {size: SizeFilter(size), hydrate: true, hydrateWithESResults: true}, (err, results) => {
+        }, {size: SizeFilter(size), hydrate: false, hydrateWithESResults: true}, (err, results) => {
             if(err){
                 return response.status(400).send(err);
             }

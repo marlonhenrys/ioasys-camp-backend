@@ -3,6 +3,7 @@ const mongoosastic = require('mongoosastic');
 
 const Student = require('./Student');
 const Subject = require('./Subject');
+const Course = require('./Course');
 
 const elasticConnection = require('../../config/elasticConnection.json');
 
@@ -26,8 +27,11 @@ const HelperListSchema = new mongoose.Schema({
 });
 
 elasticConnection['populate'] = [
-    {path: 'subjects', select: 'name'},
-    {path: 'helper'},
+    {path: 'subjects', model: Subject, select: 'name'},
+    {path: 'helper', model: Student,
+    populate:[
+        {path: 'course', model: Course},
+    ]},
 ]
 
 HelperListSchema.plugin(mongoosastic, elasticConnection);

@@ -12,7 +12,7 @@ routes.use(require('../app/middlewares/auth'));
 
 // Private Routes
 routes.use(require('./student.routes'));
-routes.use(require('./helper-list.routes'));
+routes.use(require('./helper.routes'));
 routes.use(require('./search.routes'));
 
 module.exports = routes;
