@@ -4,7 +4,7 @@ const SizeFilter = require('../utils/sizeFilter');
 const HelperList = require('../models/HelperList');
 
 module.exports = {
-    //Index e show são a mesma coisa (??)
+    
     async index(request, response) {
 
         const { institution = '', course = '', campus = '', subject = '', size = 0 } = request.query;
