@@ -78,6 +78,9 @@ module.exports = {
     async store(request, response) {
 
     },
+    async update(request, response) {
+
+    },
     async destroy(request, response) {
 
     },
