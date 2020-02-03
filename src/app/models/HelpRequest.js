@@ -51,8 +51,12 @@ const HelpRequestSchema = new mongoose.Schema({
 });
 
 elasticConnection['populate'] = [
-    {path: 'requester'},
-    {path: 'helper'},
+    {path: 'requester', model: Student, populate: [
+        {path: 'course'}
+    ]},
+    {path: 'helper', model: Student, populate: [
+        {path: 'course'}
+    ]},
     {path: 'subject'},
 ]
 
