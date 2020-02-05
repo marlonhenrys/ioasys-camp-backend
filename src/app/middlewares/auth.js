@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const authConfig = require('../../config/auth');
+const Student = require('../models/Student');
 
-module.exports = (request, response, next) => {
+module.exports = async (request, response, next) => {
     const authHeader = request.headers.authorization;
 
     if (!authHeader)
@@ -31,6 +32,14 @@ module.exports = (request, response, next) => {
             message: 'Token invalid',
             error
         });
+
+        const student = await Student.findById(decoded.student);
+
+        if (!student.active)
+            return response.status(401).json({
+                message: 'Token invalid',
+                error: 'User deleted'
+            })
 
         request.student = decoded.student;
         request.institution = decoded.institution;
