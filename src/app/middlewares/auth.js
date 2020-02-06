@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const authConfig = require('../../config/auth');
 const Student = require('../models/Student');
 
-module.exports = async (request, response, next) => {
+module.exports = (request, response, next) => {
     const authHeader = request.headers.authorization;
 
     if (!authHeader)
@@ -27,7 +27,7 @@ module.exports = async (request, response, next) => {
             error: 'The user could not be authenticated'
         })
 
-    jwt.verify(token, authConfig.secret, (error, decoded) => {
+    jwt.verify(token, authConfig.secret, async (error, decoded) => {
         if (error) return response.status(401).json({
             message: 'Token invalid',
             error
