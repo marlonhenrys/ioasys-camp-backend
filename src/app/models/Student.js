@@ -27,7 +27,7 @@ const StudentSchema = new mongoose.Schema({
     },
     birthdate: {
         type: String,
-        required: true,
+        required: false,
     },
     active: {
         type: Boolean,
