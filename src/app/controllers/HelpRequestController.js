@@ -65,9 +65,11 @@ module.exports = {
                     }}, 
                 ],
             },
-        }, {size: SizeFilter(size), hydrate: false, hydrateWithESResults: true,}, (err, results) => {
+        }, {size: SizeFilter(size), hydrate: true, hydrateWithESResults: true,}, (err, results) => {
             if(err){
-                return response.status(400).send(err);
+                return response.status(400).json({
+                    message: 'Unable to fetch Requests.'
+                });
             }
             return response.status(200).json(results.hits.hits);
         });
