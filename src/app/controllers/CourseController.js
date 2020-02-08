@@ -48,10 +48,11 @@ module.exports = {
                     }}, 
                 ],
             },
-        }, {size: SizeFilter(size), hydrate: true, hydrateWithESResults: true}, (err, results) => {
-            if(err){
+        }, {size: SizeFilter(size), hydrate: true, hydrateWithESResults: true}, (error, results) => {
+            if(error){
                 return response.status(400).json({
                     message: 'Unable to fetch courses.',
+                    error
                 });
             }
             return response.status(200).json(results.hits.hits);

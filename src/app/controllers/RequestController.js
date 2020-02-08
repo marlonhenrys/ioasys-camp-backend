@@ -67,17 +67,11 @@ module.exports = {
                     },
                 ],
             },
-<<<<<<< HEAD:src/app/controllers/HelpRequestController.js
-        }, {size: SizeFilter(size), hydrate: true, hydrateWithESResults: true,}, (err, results) => {
-            if(err){
+        }, {size: SizeFilter(size), hydrate: true, hydrateWithESResults: true,}, (error, results) => {
+            if(error){
                 return response.status(400).json({
                     message: 'Unable to fetch Requests.'
                 });
-=======
-        }, { size: SizeFilter(size), hydrate: false, hydrateWithESResults: true, }, (err, results) => {
-            if (err) {
-                return response.status(400).send(err);
->>>>>>> 0142332c26d4126ebb8311261c55ed341920512b:src/app/controllers/RequestController.js
             }
             return response.status(200).json(results.hits.hits);
         });

@@ -69,19 +69,15 @@ module.exports = {
                     },
                 ],
             },
-<<<<<<< HEAD:src/app/controllers/HelperListController.js
-        }, {size: SizeFilter(size), hydrate: false, hydrateWithESResults: true,}, (err, results) => {
-            if(err){
+        }, {size: SizeFilter(size), hydrate: false, hydrateWithESResults: true,}, (error, results) => {
+            if(error){
                 return response.status(400).json({
-                    message: 'Unable to fetch helpers.'
+                    message: 'Unable to fetch helpers.',
+                    error
                 });
-=======
-        }, { size: SizeFilter(size), hydrate: false, hydrateWithESResults: true, }, (err, results) => {
-            if (err) {
-                return response.status(400).send(err);
->>>>>>> 0142332c26d4126ebb8311261c55ed341920512b:src/app/controllers/HelperController.js
             }
-            return response.status(200).json(results.hits.hits);
+            const hydrated = results.hits.hits.map(({_id, _source: { student }, _source: { subjects }}) => ({_id, student, subjects}));
+            return response.status(200).json(hydrated);
         });
     },
 
