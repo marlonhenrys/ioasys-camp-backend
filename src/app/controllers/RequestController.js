@@ -1,7 +1,7 @@
 const Regex = require('../utils/regexStringCleaner');
 const SizeFilter = require('../utils/sizeFilter');
 
-const HelpRequest = require('../models/HelpRequest');
+const Request = require('../models/Request');
 
 module.exports = {
     async index(request, response) {
@@ -13,46 +13,46 @@ module.exports = {
         const campusFiltered = Regex(campus);
 
         //Work around to return all values if param does not exist
-        let courseNameQuery = {match_all: {}};
-        let institutionQuery = {match_all: {}};
-        let subjectQuery = {match_all: {}};
-        if(courseFiltered && courseFiltered != ''){
+        let courseNameQuery = { match_all: {} };
+        let institutionQuery = { match_all: {} };
+        let subjectQuery = { match_all: {} };
+        if (courseFiltered && courseFiltered != '') {
             courseNameQuery = {
                 multi_match: {
                     query: courseFiltered,
                     type: 'bool_prefix',
                     fuzziness: 'AUTO',
                     fields: [
-                      'requester.course.name',
-                      'requester.course.name._2gram',
-                      'requester.course.name._3gram'
+                        'requester.course.name',
+                        'requester.course.name._2gram',
+                        'requester.course.name._3gram'
                     ],
                 },
             }
         }
-        if(subjectFiltered && subjectFiltered != ''){
+        if (subjectFiltered && subjectFiltered != '') {
             subjectQuery = {
                 multi_match: {
                     query: subjectFiltered,
                     type: 'bool_prefix',
                     fuzziness: 'AUTO',
                     fields: [
-                      'subject.name',
-                      'subject.name._2gram',
-                      'subject.name._3gram'
+                        'subject.name',
+                        'subject.name._2gram',
+                        'subject.name._3gram'
                     ],
                 },
             }
         }
-        if(institutionFiltered && institutionFiltered != ''){
+        if (institutionFiltered && institutionFiltered != '') {
             institutionQuery = {
-                term: {'requester.course.institution._id': institutionFiltered},
+                term: { 'requester.course.institution._id': institutionFiltered },
             }
         }
 
         //Query itself
         let list = [];
-        await HelpRequest.search({
+        await Request.search({
             bool: {
                 must: [
                     institutionQuery,
@@ -60,16 +60,24 @@ module.exports = {
                     subjectQuery,
                 ],
                 should: [
-                    {match_phrase_prefix: {
-                        'campus': campusFiltered,
-                    }}, 
+                    {
+                        match_phrase_prefix: {
+                            'campus': campusFiltered,
+                        }
+                    },
                 ],
             },
+<<<<<<< HEAD:src/app/controllers/HelpRequestController.js
         }, {size: SizeFilter(size), hydrate: true, hydrateWithESResults: true,}, (err, results) => {
             if(err){
                 return response.status(400).json({
                     message: 'Unable to fetch Requests.'
                 });
+=======
+        }, { size: SizeFilter(size), hydrate: false, hydrateWithESResults: true, }, (err, results) => {
+            if (err) {
+                return response.status(400).send(err);
+>>>>>>> 0142332c26d4126ebb8311261c55ed341920512b:src/app/controllers/RequestController.js
             }
             return response.status(200).json(results.hits.hits);
         });

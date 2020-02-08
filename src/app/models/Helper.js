@@ -7,8 +7,8 @@ const Course = require('./Course');
 
 const elasticConnection = require('../../config/elasticConnection.json');
 
-const HelperListSchema = new mongoose.Schema({
-    helper: {
+const HelperSchema = new mongoose.Schema({
+    student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
         required: true,
@@ -27,16 +27,18 @@ const HelperListSchema = new mongoose.Schema({
 });
 
 elasticConnection['populate'] = [
-    {path: 'subjects', model: Subject, select: 'name'},
-    {path: 'helper', model: Student,
-    populate:[
-        {path: 'course', model: Course},
-    ]},
+    { path: 'subjects', model: Subject, select: 'name' },
+    {
+        path: 'student', model: Student,
+        populate: [
+            { path: 'course', model: Course },
+        ]
+    },
 ]
 
-HelperListSchema.plugin(mongoosastic, elasticConnection);
+HelperSchema.plugin(mongoosastic, elasticConnection);
 
-const Model = mongoose.model('HelperList', HelperListSchema);
-Model.synchronize({}, {saveOnSynchronize: true});
+const Model = mongoose.model('Helper', HelperSchema);
+Model.synchronize({}, { saveOnSynchronize: true });
 
 module.exports = Model;
