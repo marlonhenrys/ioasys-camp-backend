@@ -33,17 +33,21 @@ const StudentSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: true,
+    },
+    isHelper: {
+        type: Boolean,
+        required: true,
     }
 });
 
 elasticConnection['populate'] = [
-    {path: 'course'},
+    { path: 'course' },
 ]
 
 StudentSchema.plugin(mongoosastic, elasticConnection);
 StudentSchema.plugin(mongoosePaginate);
 
 const Model = mongoose.model('Student', StudentSchema);
-Model.synchronize({}, {saveOnSynchronize: true});
+Model.synchronize({}, { saveOnSynchronize: true });
 
 module.exports = Model;

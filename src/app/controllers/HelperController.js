@@ -1,10 +1,10 @@
 const Regex = require('../utils/regexStringCleaner');
 const SizeFilter = require('../utils/sizeFilter');
 
-const HelperList = require('../models/HelperList');
+const Helper = require('../models/Helper');
 
 module.exports = {
-    
+
     async index(request, response) {
 
         const { institution = '', course = '', campus = '', subject = '', size = 0 } = request.query;
@@ -15,46 +15,46 @@ module.exports = {
         const campusFiltered = Regex(campus);
 
         //Work around to return all values if param does not exist
-        let courseNameQuery = {match_all: {}};
-        let institutionQuery = {match_all: {}};
-        let subjectQuery = {match_all: {}};
-        if(courseFiltered && courseFiltered != ''){
+        let courseNameQuery = { match_all: {} };
+        let institutionQuery = { match_all: {} };
+        let subjectQuery = { match_all: {} };
+        if (courseFiltered && courseFiltered != '') {
             courseNameQuery = {
                 multi_match: {
                     query: courseFiltered,
                     type: 'bool_prefix',
                     fuzziness: 'AUTO',
                     fields: [
-                      'helper.course.name',
-                      'helper.course.name._2gram',
-                      'helper.course.name._3gram'
+                        'student.course.name',
+                        'student.course.name._2gram',
+                        'student.course.name._3gram'
                     ],
                 },
             }
         }
-        if(subjectFiltered && subjectFiltered != ''){
+        if (subjectFiltered && subjectFiltered != '') {
             subjectQuery = {
                 multi_match: {
                     query: subjectFiltered,
                     type: 'bool_prefix',
                     fuzziness: 'AUTO',
                     fields: [
-                      'subjects.name',
-                      'subjects.name._2gram',
-                      'subjects.name._3gram'
+                        'subjects.name',
+                        'subjects.name._2gram',
+                        'subjects.name._3gram'
                     ],
                 },
             }
         }
-        if(institutionFiltered && institutionFiltered != ''){
+        if (institutionFiltered && institutionFiltered != '') {
             institutionQuery = {
-                term: {'helper.course.institution._id': institutionFiltered},
+                term: { 'student.course.institution._id': institutionFiltered },
             }
         }
 
         //Query itself
         let list = [];
-        await HelperList.search({
+        await Helper.search({
             bool: {
                 must: [
                     institutionQuery,
@@ -62,13 +62,15 @@ module.exports = {
                     subjectQuery,
                 ],
                 should: [
-                    {match_phrase_prefix: {
-                        'campus': campusFiltered,
-                    }}, 
+                    {
+                        match_phrase_prefix: {
+                            'campus': campusFiltered,
+                        }
+                    },
                 ],
             },
-        }, {size: SizeFilter(size), hydrate: false, hydrateWithESResults: true,}, (err, results) => {
-            if(err){
+        }, { size: SizeFilter(size), hydrate: false, hydrateWithESResults: true, }, (err, results) => {
+            if (err) {
                 return response.status(400).send(err);
             }
             return response.status(200).json(results.hits.hits);
@@ -77,11 +79,11 @@ module.exports = {
 
     async show(request, response) {
 
-        const { helper } = request.params;
+        const { student } = request.params;
 
-        const helperList = await HelperList.find({ helper });
+        const helper = await Helper.find({ student });
 
-        return response.status(200).json(helperList);
+        return response.status(200).json(helper);
     },
 
     async store(request, response) {
@@ -90,16 +92,16 @@ module.exports = {
         const { student } = request;
 
         try {
-            const helperList = await HelperList.find({ helper: student });
+            const helper = await Helper.find({ student });
 
             subjects.map(subject => {
-                if (!helperList.subjects.includes(subject))
-                    helperList.subjects.push(subject);
+                if (!helper.subjects.includes(subject))
+                    helper.subjects.push(subject);
             });
 
-            await helperList.save();
+            await helper.save();
 
-            return response.status(200).json(helperList);
+            return response.status(200).json(helper);
 
         } catch (error) {
             return response.status(400).json({
@@ -115,13 +117,13 @@ module.exports = {
         const { student } = request;
 
         try {
-            const helperList = await HelperList.find({ helper: student });
+            const helper = await Helper.find({ student });
 
-            const newList = helperList.subjects.filter(subject => subject != id);
+            const newList = helper.subjects.filter(subject => subject != id);
 
-            helperList.subjects = newList;
+            helper.subjects = newList;
 
-            await helperList.save();
+            await helper.save();
 
             return response.status(200).json({
                 message: 'Successful deletion'

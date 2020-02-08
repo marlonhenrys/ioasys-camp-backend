@@ -1,7 +1,7 @@
 const Regex = require('../utils/regexStringCleaner');
 const SizeFilter = require('../utils/sizeFilter');
 
-const DirectSolicitation = require('../models/DirectSolicitation');
+const Direct = require('../models/Direct');
 
 module.exports = {
     async index(request, response) {

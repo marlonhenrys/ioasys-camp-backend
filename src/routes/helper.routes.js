@@ -1,11 +1,11 @@
 const { Router } = require('express');
-const helperListController = require('../app/controllers/HelperListController');
+const helperController = require('../app/controllers/HelperController');
 
-const helperListRoutes = Router();
+const helperRoutes = Router();
 
-helperListRoutes.get('/helpers', helperListController.index);
-helperListRoutes.get('/helpers/:id', helperListController.show);
-helperListRoutes.post('/helpers', helperListController.store);
-helperListRoutes.delete('/helpers/:id', helperListController.destroy);
+helperRoutes.get('/helpers', helperController.index);
+helperRoutes.get('/helpers/:id', helperController.show);
+helperRoutes.post('/helpers', helperController.store);
+helperRoutes.delete('/helpers/:id', helperController.destroy);
 
-module.exports = helperListRoutes;
+module.exports = helperRoutes;

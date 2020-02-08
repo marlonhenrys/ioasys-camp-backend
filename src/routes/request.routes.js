@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const requestController = require('../app/controllers/HelpRequestController');
+const requestController = require('../app/controllers/RequestController');
 
 const requestRoutes = Router();
 
