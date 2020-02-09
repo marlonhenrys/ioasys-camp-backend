@@ -25,8 +25,8 @@
       "description": "Everything about subject"
     },
     {
-      "name": "helper-list",
-      "description": "Everything about subject"
+      "name": "helpers",
+      "description": "Everything about helpers"
     }
   ],
   "schemes": [
@@ -401,10 +401,10 @@
         }
       }
     },
-    "/helper-list": {
+    "/helpers": {
       "get": {
         "tags": [
-          "helper-list"
+          "helpers"
         ],
         "summary": "List helpers",
         "description": "Private Route",
@@ -413,13 +413,48 @@
           "application/xml",
           "application/json"
         ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "institution",
+            "description": "institution",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "course",
+            "description": "course",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "campus",
+            "description": "campus",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "subject",
+            "description": "subject",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/HelperList"
+                "$ref": "#/definitions/Helper"
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to fetch helpers.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Helper"
               }
             }
           }
@@ -432,9 +467,9 @@
       },
       "post": {
         "tags": [
-          "helper-list"
+          "helpers"
         ],
-        "summary": "Verify user",
+        "summary": "Register helper",
         "description": "Private Route",
         "operationId": "storeHelper",
         "consumes": [
@@ -462,12 +497,60 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/HelperList"
+                "$ref": "#/definitions/Helper"
               }
             }
           },
-          "401": {
+          "400": {
             "description": "Failed to save"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/helpers/{id}": {
+      "get": {
+        "tags": [
+          "helpers"
+        ],
+        "summary": "Finds helpers by id",
+        "description": "Private Route",
+        "operationId": "findHelpersId",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of helper to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Helper"
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to fetch helpers",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Helper"
+              }
+            }
           }
         },
         "security": [
@@ -478,7 +561,7 @@
       },
       "delete": {
         "tags": [
-          "helper-list"
+          "helpers"
         ],
         "summary": "Delete a helper",
         "description": "Private Route",
@@ -510,45 +593,6 @@
           }
         ]
       }
-    },
-    "/helper-list/{id}": {
-      "get": {
-        "tags": [
-          "helper-list"
-        ],
-        "summary": "Finds helpers by id",
-        "description": "Private Route",
-        "operationId": "findHelpersId",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of helper to return",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/HelperList"
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "Authorization": []
-          }
-        ]
-      }
     }
   },
   "securityDefinitions": {
@@ -561,6 +605,7 @@
   "definitions": {
     "User": {
       "required": [
+        "student",
         "email",
         "password"
       ],
@@ -573,7 +618,8 @@
           "$ref": "#/definitions/Student"
         },
         "email": {
-          "type": "string"
+          "type": "string",
+          "uniqueItems": true
         },
         "password": {
           "type": "string"
@@ -593,7 +639,8 @@
         "course",
         "gender",
         "birthdate",
-        "active"
+        "active",
+        "isHelper"
       ],
       "type": "object",
       "properties": {
@@ -615,6 +662,9 @@
         "active": {
           "type": "boolean",
           "default": true
+        },
+        "isHelper": {
+          "type": "boolean"
         }
       },
       "xml": {
@@ -664,14 +714,14 @@
         "name": "Subject"
       }
     },
-    "HelperList": {
+    "Helper": {
       "required": [
-        "helper",
+        "student",
         "subjects"
       ],
       "type": "object",
       "properties": {
-        "helper": {
+        "student": {
           "$ref": "#/definitions/Student"
         },
         "subjects": {
@@ -679,18 +729,85 @@
         }
       },
       "xml": {
-        "name": "HelperList"
+        "name": "Helper"
       }
     },
-    "HelperRequest": {
+    "Direct": {
+      "required": [
+        "helper",
+        "requester",
+        "status"
+      ],
+      "type": "object",
+      "properties": {
+        "helper": {
+          "$ref": "#/definitions/Student"
+        },
+        "requester": {
+          "$ref": "#/definitions/Student"
+        },
+        "status": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "default": "now"
+        }
+      },
+      "xml": {
+        "name": "Direct"
+      }
+    },
+    "Subscription": {
+      "required": [
+        "candidate",
+        "help_request",
+        "status"
+      ],
+      "type": "object",
+      "properties": {
+        "candidate": {
+          "$ref": "#/definitions/Student"
+        },
+        "help_request": {
+          "$ref": "#/definitions/Request"
+        },
+        "status": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "default": "now"
+        }
+      },
+      "xml": {
+        "name": "Subscription"
+      }
+    },
+    "Institution": {
+      "required": [
+        "name"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Institution"
+      }
+    },
+    "Request": {
       "required": [
         "requester",
         "helper",
         "subject",
         "title",
         "body",
-        "status",
-        "createdAt"
+        "status"
       ],
       "type": "object",
       "properties": {
@@ -714,79 +831,12 @@
         },
         "createdAt": {
           "type": "string",
-          "format": "date"
+          "format": "date",
+          "default": "now"
         }
       },
       "xml": {
-        "name": "HelperRequest"
-      }
-    },
-    "DirectSolicitation": {
-      "required": [
-        "helper",
-        "requester",
-        "status",
-        "createdAt"
-      ],
-      "type": "object",
-      "properties": {
-        "helper": {
-          "$ref": "#/definitions/Student"
-        },
-        "requester": {
-          "$ref": "#/definitions/Student"
-        },
-        "status": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date"
-        }
-      },
-      "xml": {
-        "name": "DirectSolicitation"
-      }
-    },
-    "Subscription": {
-      "required": [
-        "candidate",
-        "help_request",
-        "status",
-        "createdAt"
-      ],
-      "type": "object",
-      "properties": {
-        "candidate": {
-          "$ref": "#/definitions/Student"
-        },
-        "help_request": {
-          "$ref": "#/definitions/HelperRequest"
-        },
-        "status": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date"
-        }
-      },
-      "xml": {
-        "name": "Subscription"
-      }
-    },
-    "Institution": {
-      "required": [
-        "name"
-      ],
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Institution"
+        "name": "Request"
       }
     }
   }
