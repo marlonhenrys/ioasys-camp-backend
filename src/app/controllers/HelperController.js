@@ -69,14 +69,14 @@ module.exports = {
                     },
                 ],
             },
-        }, {size: SizeFilter(size), hydrate: false, hydrateWithESResults: true,}, (error, results) => {
-            if(error){
+        }, { size: SizeFilter(size), hydrate: false, hydrateWithESResults: true, }, (error, results) => {
+            if (error) {
                 return response.status(400).json({
                     message: 'Unable to fetch helpers.',
                     error
                 });
             }
-            const hydrated = results.hits.hits.map(({_id, _source: { student }, _source: { subjects }}) => ({_id, student, subjects}));
+            const hydrated = results.hits.hits.map(({ _id, _source: { student }, _source: { subjects } }) => ({ _id, student, subjects }));
             return response.status(200).json(hydrated);
         });
     },
@@ -85,12 +85,29 @@ module.exports = {
 
         const { student } = request.params;
 
-        const helper = await Helper.find({ student });
+        const helper = await Helper.find({ student }).populate('subjects');
 
         return response.status(200).json(helper);
     },
 
     async store(request, response) {
+
+        const { subjects } = request.body;
+        const { student } = request;
+
+        try {
+            const helper = await (await Helper.create({ student, subjects })).populate('subjects');
+            return response.status(201).json(helper);
+
+        } catch (error) {
+            return response.status(400).json({
+                message: 'Failed to create helper',
+                error
+            });
+        }
+    },
+
+    async update(request, response) {
 
         const { subjects } = request.body;
         const { student } = request;
