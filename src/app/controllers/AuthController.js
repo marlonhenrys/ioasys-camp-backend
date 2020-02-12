@@ -49,9 +49,12 @@ module.exports = {
 
         let { email, password } = request.body;
 
-        const user = await User.findOne({ email }).populate({path: 'student', populate: [
-            {path: 'course'}
-        ]});
+        const user = await User.findOne({ email }).populate(
+            {
+                path: 'student', populate: [
+                    { path: 'course' }
+                ]
+            });
 
         if (!user)
             return response.status(401).json({
