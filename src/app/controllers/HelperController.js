@@ -85,7 +85,7 @@ module.exports = {
 
         const { student } = request.params;
 
-        const helper = await Helper.find({ student });
+        const helper = await Helper.find({ student }).populate('subjects');
 
         return response.status(200).json(helper);
     },
@@ -96,7 +96,7 @@ module.exports = {
         const { student } = request;
 
         try {
-            const helper = await Helper.create({ student, subjects });
+            const helper = await (await Helper.create({ student, subjects })).populate('subjects');
             return response.status(201).json(helper);
 
         } catch (error) {
