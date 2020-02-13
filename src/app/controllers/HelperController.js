@@ -83,9 +83,9 @@ module.exports = {
 
     async show(request, response) {
 
-        const { id } = request.params;
+        const student = request.params.id;
 
-        const helper = await Helper.find({ student: id }).populate('subjects');
+        const helper = await Helper.find({ student }).populate('subjects');
 
         return response.status(200).json(helper);
     },
