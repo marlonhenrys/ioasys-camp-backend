@@ -1,2 +1,2 @@
 const DEFAULT_MAX_HITS = 50;
-const MAX_HITS = 200;
+const MAX_HITS = 500;
