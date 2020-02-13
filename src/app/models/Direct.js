@@ -1,24 +1,20 @@
 const mongoose = require('mongoose');
-const mongoosastic = require('mongoosastic');
-
-const elasticConnection = require('../../config/elasticConnection.json');
 
 const DirectSchema = new mongoose.Schema({
     helper: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
-        required: true,
-        es_indexed: true,
-        es_type: 'nested',
-        es_include_in_parent: true,
+        required: true
     },
     requester: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
-        required: true,
-        es_indexed: true,
-        es_type: 'nested',
-        es_include_in_parent: true,
+        required: true
+    },
+    subject: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subject',
+        required: true
     },
     status: {
         type: String,
@@ -30,14 +26,6 @@ const DirectSchema = new mongoose.Schema({
     }
 });
 
-elasticConnection['populate'] = [
-    { path: 'helper' },
-    { path: 'requester' },
-]
-
-DirectSchema.plugin(mongoosastic, elasticConnection);
-
 const Model = mongoose.model('Direct', DirectSchema);
-Model.synchronize({}, { saveOnSynchronize: true });
 
 module.exports = Model;
