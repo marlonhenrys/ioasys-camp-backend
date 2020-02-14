@@ -27,6 +27,18 @@
     {
       "name": "helpers",
       "description": "Everything about helpers"
+    },
+    {
+      "name": "direct",
+      "description": "Everything about direct"
+    },
+    {
+      "name": "request",
+      "description": "Working"
+    },
+    {
+      "name": "subscription",
+      "description": "Working"
     }
   ],
   "schemes": [
@@ -510,6 +522,48 @@
             "Authorization": []
           }
         ]
+      },
+      "put": {
+        "tags": [
+          "helpers"
+        ],
+        "summary": "Update helpers",
+        "description": "Private Route",
+        "operationId": "updateHelpers",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "dados",
+            "description": "Subject object that needs to be update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Subject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Helper"
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to save"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
       }
     },
     "/helpers/{id}": {
@@ -593,6 +647,272 @@
           }
         ]
       }
+    },
+    "/directs": {
+      "get": {
+        "tags": [
+          "direct"
+        ],
+        "summary": "List direct solicitation(Working)",
+        "description": "Private Route",
+        "operationId": "listDirect",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Direct"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "direct"
+        ],
+        "summary": "Register direct solicitation",
+        "description": "Private Route",
+        "operationId": "storeDirect",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Direct object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Direct"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Direct"
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to create direct message"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "direct"
+        ],
+        "summary": "Delete a direct solicitation",
+        "description": "Private Route",
+        "operationId": "deleteDirect",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of direct message to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful deletion"
+          },
+          "400": {
+            "description": "Deletion failed"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/directs/{id}": {
+      "get": {
+        "tags": [
+          "direct"
+        ],
+        "summary": "Finds direct solicitation by id",
+        "description": "Private Route",
+        "operationId": "findDirectId",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of direct solicitation to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Direct"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "direct"
+        ],
+        "summary": "Update direct solicitation",
+        "description": "Private Route",
+        "operationId": "updateDirect",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of direct solicitation to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "dados",
+            "description": "Direct solicitation object that needs to be update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Direct"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Direct"
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to update direct message"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/requests": {
+      "get": {
+        "tags": [
+          "request"
+        ],
+        "summary": "List request",
+        "description": "Private Route",
+        "operationId": "listRequest",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "institution",
+            "description": "institution",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "course",
+            "description": "course",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "campus",
+            "description": "campus",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "subject",
+            "description": "subject",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Request"
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to fetch Requests"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
     }
   },
   "securityDefinitions": {
@@ -638,7 +958,7 @@
         "name",
         "course",
         "gender",
-        "birthdate",
+        "phone",
         "active",
         "isHelper"
       ],
@@ -656,7 +976,7 @@
         "gender": {
           "type": "string"
         },
-        "birthdate": {
+        "phone": {
           "type": "string"
         },
         "active": {
@@ -736,6 +1056,7 @@
       "required": [
         "helper",
         "requester",
+        "subject",
         "status"
       ],
       "type": "object",
@@ -745,6 +1066,9 @@
         },
         "requester": {
           "$ref": "#/definitions/Student"
+        },
+        "subject": {
+          "$ref": "#/definitions/Subject"
         },
         "status": {
           "type": "string"
