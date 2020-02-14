@@ -6,6 +6,6 @@ const userRoutes = Router();
 userRoutes.get('/students', studentController.index);
 userRoutes.get('/students/:id', studentController.show);
 userRoutes.put('/students', studentController.update);
-userRoutes.delete('/students', studentController.destroy);
+userRoutes.delete('/students/:id', studentController.destroy);
 
 module.exports = userRoutes;

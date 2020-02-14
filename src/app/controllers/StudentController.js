@@ -33,13 +33,13 @@ module.exports = {
         const { student } = request;
 
         try {
-            const newStudent = await Student.findByIdAndUpdate(student, data, { new: true });
-
+            const oldStudent = await Student.findByIdAndUpdate(student, data, { new: true });
             if (password) {
                 const user = await User.findOne({ student });
                 user.password = password;
                 await user.save();
             }
+            const newStudent = await Student.findById(student);
 
             return response.status(200).json(newStudent);
 
@@ -53,7 +53,7 @@ module.exports = {
 
     async destroy(request, response) {
 
-        const { student } = request;
+        const { student } = request.params.id;
 
         try {
             await Student.findByIdAndUpdate(student, { active: false });
