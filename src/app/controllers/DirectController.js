@@ -12,9 +12,15 @@ module.exports = {
         return response.status(200).json(directs);
     },
     async show(request, response) {
-        const { _id } = request.params.id;
+        const { helper } = request.params.id;
+        const { id } = request.params.direct;
 
-        const direct = await Direct.findById({ _id });
+        const directs = await Direct.find({ helper });
+        const direct = directs.filter((value) => {
+            if(value.id === id){
+                return value;
+            }
+        });
         
         return response.status(200).json(direct);
     },
@@ -32,11 +38,11 @@ module.exports = {
         }
     },
     async update(request, response) {
-        const { _id } = request.params;
+        const { id } = request.params;
         const { ...data } = request.body;
         
         try {
-            const direct = await Direct.findByIdAndUpdate({ _id }, { data });
+            const direct = await Direct.findByIdAndUpdate({ id }, { data });
             return request.status(204).json({direct});
         } catch (error) {
             return request.status(400).json({
@@ -46,10 +52,10 @@ module.exports = {
         }
     },
     async destroy(request, response) {
-        const { _id } = request.params;
+        const { id } = request.params;
 
         try {
-            const direct = await Direct.findByIdAndDelete({ _id });
+            const direct = await Direct.findByIdAndDelete({ id });
             return request.status(204).json({direct});
         } catch (error) {
             return request.status(400).json({
