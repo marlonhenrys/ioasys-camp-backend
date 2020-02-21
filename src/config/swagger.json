@@ -200,31 +200,6 @@
             "Authorization": []
           }
         ]
-      },
-      "delete": {
-        "tags": [
-          "student"
-        ],
-        "summary": "Delete a student",
-        "description": "Private Route",
-        "operationId": "deleteStudent",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful deletion"
-          },
-          "400": {
-            "description": "Deletion failed"
-          }
-        },
-        "security": [
-          {
-            "Authorization": []
-          }
-        ]
       }
     },
     "/students/{id}": {
@@ -260,6 +235,40 @@
           },
           "404": {
             "description": "Student not found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Delete a student",
+        "description": "Private Route",
+        "operationId": "deleteStudent",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of student to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful deletion"
+          },
+          "400": {
+            "description": "Deletion failed"
           }
         },
         "security": [
@@ -649,43 +658,6 @@
       }
     },
     "/directs": {
-      "get": {
-        "tags": [
-          "direct"
-        ],
-        "summary": "List direct solicitation(Working)",
-        "description": "Private Route",
-        "operationId": "listDirect",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "id",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Direct"
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "Authorization": []
-          }
-        ]
-      },
       "post": {
         "tags": [
           "direct"
@@ -731,40 +703,6 @@
             "Authorization": []
           }
         ]
-      },
-      "delete": {
-        "tags": [
-          "direct"
-        ],
-        "summary": "Delete a direct solicitation",
-        "description": "Private Route",
-        "operationId": "deleteDirect",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of direct message to delete",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful deletion"
-          },
-          "400": {
-            "description": "Deletion failed"
-          }
-        },
-        "security": [
-          {
-            "Authorization": []
-          }
-        ]
       }
     },
     "/directs/{id}": {
@@ -783,7 +721,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "ID of direct solicitation to return",
+            "description": "ID of helper to return",
             "required": true,
             "type": "string"
           }
@@ -846,6 +784,86 @@
           },
           "400": {
             "description": "Unable to update direct message"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "direct"
+        ],
+        "summary": "Delete a direct solicitation",
+        "description": "Private Route",
+        "operationId": "deleteDirect",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of direct message to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful deletion"
+          },
+          "400": {
+            "description": "Deletion failed"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/directs/{id}/{direct}": {
+      "get": {
+        "tags": [
+          "direct"
+        ],
+        "summary": "List direct solicitation",
+        "description": "Private Route",
+        "operationId": "listDirect",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "direct",
+            "description": "direct",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Direct"
+              }
+            }
           }
         },
         "security": [
